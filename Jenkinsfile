@@ -27,6 +27,7 @@ pipeline {
             steps{
             sh '''
                 echo "Test Stage"
+                find  ./build -name index.html
             '''
             }
         }
