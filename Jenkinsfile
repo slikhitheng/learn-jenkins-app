@@ -21,38 +21,42 @@ pipeline {
             }
         }
 
-        stage('Test'){
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
+        stage('Run Test'){
+            parallel{
+                stage('Test'){
+                    agent{
+                        docker{
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps{
+                    sh '''
+                        echo "Test Stage"
+                        find  ./build -name index.html
+                        test -f ./build/index.html
+                        npm test
+                    '''
+                    }
                 }
-            }
-            steps{
-            sh '''
-                echo "Test Stage"
-                find  ./build -name index.html
-                test -f ./build/index.html
-                npm test
-            '''
-            }
-        }
 
-        stage('E2E'){
-            agent{
-                docker{
-                    image 'mcr.microsoft.com/playwright:v1.46.0-jammy'
-                    reuseNode true
+                stage('E2E'){
+                    agent{
+                        docker{
+                            image 'mcr.microsoft.com/playwright:v1.46.0-jammy'
+                            reuseNode true
+                        }
+                    }
+                    steps{
+                    sh '''
+                        npx playwright install                               
+                        npm install serve
+                        node_modules/.bin/serve -s build &
+                        sleep 10
+                        npx playwright test --reporter=html
+                    '''
+                    }
                 }
-            }
-            steps{
-            sh '''
-                npx playwright install                               
-                npm install serve
-                node_modules/.bin/serve -s build &
-                sleep 10
-                npx playwright test --reporter=html
-            '''
             }
         }
     }
