@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Test aşaması.."
-                    test -f  ~/public/index.html
+                    test -f  public/index.html
                 '''
             }
         }
