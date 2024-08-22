@@ -37,4 +37,16 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo 'Her zaman çalışırım'
+            junit 'test-results/junit.xml'
+        }
+        success {
+            echo 'Başarılıysa çalışırım'
+        }
+        failure {
+            echo 'Hatalıysam çalışırım'
+        }
+    }
 }
