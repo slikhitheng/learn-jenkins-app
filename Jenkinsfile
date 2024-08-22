@@ -26,6 +26,7 @@ pipeline {
                 sh '''
                     echo "Test aşaması.."
                     test -f  public/index.html
+                    npm test
                 '''
             }
         }
