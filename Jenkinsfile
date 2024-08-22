@@ -19,6 +19,15 @@ pipeline {
                     ls -la
                 '''
             }
+            
+        }
+        stage('Test'){
+            steps {
+                sh '''
+                    echo "Test aşaması.."
+                    test -f  ~/public/index.html
+                '''
+            }
         }
     }
 }
