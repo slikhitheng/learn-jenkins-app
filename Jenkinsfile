@@ -5,11 +5,12 @@ pipeline {
         stage('Yapi') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
             }
             steps {
+                /*
                 sh '''
                     ls -la
                     node --version
@@ -17,6 +18,12 @@ pipeline {
                     npm ci
                     npm run build
                     ls -la
+                '''
+                */
+                sh '''
+                    npm install --save-dev @playwright/test
+                    npx playwright install
+                    npx playwright test
                 '''
             }
             
