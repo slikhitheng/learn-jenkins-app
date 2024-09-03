@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     stages {
-        line1
         stage('Build') {
             agent {
                 docker {
