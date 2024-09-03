@@ -21,9 +21,12 @@ pipeline {
             }
         }
 
-        stage ('test') {
-            steps{
-            sh 'echo "Test Stage"'
+        stage('test') {
+            steps {
+            sh '''
+            echo "Test Stage"
+            find / -name "build/index.html"
+            '''
             }
         }
     }
