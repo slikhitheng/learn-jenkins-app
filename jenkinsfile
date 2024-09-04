@@ -9,8 +9,8 @@ pipeline {
 
     stages {
 
-        stage('Docker'){
-            steps{
+        stage('Docker') {
+            steps {
                 sh 'docker build -t my-playwright .'
             }
         }
@@ -19,7 +19,6 @@ pipeline {
             agent {
                 docker {
                     image 'node:18-alpine'
-                    args '-u root:root'  // Führe den Container als Root aus
                     reuseNode true
                 }
             }
@@ -41,12 +40,13 @@ pipeline {
                     agent {
                         docker {
                             image 'node:18-alpine'
-                            args '-u root:root'  // Führe den Container als Root aus
                             reuseNode true
                         }
                     }
+
                     steps {
                         sh '''
+                            #test -f build/index.html
                             npm test
                         '''
                     }
@@ -60,11 +60,11 @@ pipeline {
                 stage('E2E') {
                     agent {
                         docker {
-                            image 'my-playwright'
-                            args '-u root:root'  // Führe den Container als Root aus
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                             reuseNode true
                         }
                     }
+
                     steps {
                         sh '''
                             npm install serve
@@ -73,6 +73,7 @@ pipeline {
                             npx playwright test  --reporter=html
                         '''
                     }
+
                     post {
                         always {
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Local E2E', reportTitles: '', useWrapperFileDirectly: true])
@@ -86,7 +87,6 @@ pipeline {
             agent {
                 docker {
                     image 'my-playwright'
-                    args '-u root:root'  // Führe den Container als Root aus
                     reuseNode true
                 }
             }
@@ -117,7 +117,6 @@ pipeline {
             agent {
                 docker {
                     image 'my-playwright'
-                    args '-u root:root'  // Führe den Container als Root aus
                     reuseNode true
                 }
             }
@@ -129,7 +128,6 @@ pipeline {
             steps {
                 sh '''
                     node --version
-                    npm install netlify-cli
                     netlify --version
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                     netlify status
