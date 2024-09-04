@@ -55,6 +55,7 @@ pipeline {
                     agent {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            args: '-u root:root'
                             reuseNode true
                         }
                     }
@@ -64,8 +65,6 @@ pipeline {
                             npm install serve
                             node_modules/.bin/serve -s build &
                             sleep 10
-                            mkdir -p playwright-report
-                            chmod -R 777 playwright-report
                             npx playwright test  --reporter=html
                         '''
                     }
@@ -76,7 +75,6 @@ pipeline {
                         }
                     }
                 }
-
             }
         }
 
