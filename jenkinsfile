@@ -9,12 +9,6 @@ pipeline {
 
     stages {
 
-        stage('Docker') {
-            steps {
-                sh 'docker build -t my-playwright .'
-            }
-        }
-
         stage('Build') {
             agent {
                 docker {
@@ -116,7 +110,7 @@ pipeline {
             }
         }
 
-        stage('Deploy prod') {
+/*        stage('Deploy prod') {
             agent {
                 docker {
                     image 'my-playwright'
@@ -139,7 +133,7 @@ pipeline {
                     npx playwright test  --reporter=html
                 '''
             }
-
+*/
             post {
                 always {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Prod E2E', reportTitles: '', useWrapperFileDirectly: true])
