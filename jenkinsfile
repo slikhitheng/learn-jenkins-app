@@ -2,18 +2,19 @@ pipeline {
     agent any
 
     stages {
+        stage ('Run Tests') {
+            parallel {
         stage('Test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh 'npm test'
+                    }
                 }
-            }
-            steps {
-                sh 'npm test'
-            }
-        }
-
         stage('E2E') {
             agent {
                 docker {
@@ -31,6 +32,8 @@ pipeline {
                     sleep 10
                     npx playwright test --reporter=html
                 '''
+            }
+        }
             }
         }
     }
