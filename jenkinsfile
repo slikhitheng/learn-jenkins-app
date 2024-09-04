@@ -110,8 +110,7 @@ pipeline {
             }
         }
 
-
-/*        stage('Deploy prod') {
+        stage('Deploy prod') {
             agent {
                 docker {
                     image 'my-playwright'
@@ -123,7 +122,7 @@ pipeline {
             environment {
                 CI_ENVIRONMENT_URL = 'https://66d8235b93eedb67cc81b667--stunning-froyo-2af8b0.netlify.app/'
             }
-
+            
             steps {
                 sh '''
                     node --version
@@ -134,7 +133,7 @@ pipeline {
                     npx playwright test  --reporter=html
                 '''
             }
-*/
+
             post {
                 always {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Prod E2E', reportTitles: '', useWrapperFileDirectly: true])
