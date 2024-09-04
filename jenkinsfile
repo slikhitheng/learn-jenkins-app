@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_SITE_ID = 'PUT YOUR NETLIFY SITE ID HERE'
+        NETLIFY_SITE_ID = '23841e68-6369-4ef5-becf-cf69f4f4775e'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
     }
 
@@ -103,7 +103,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'PUT YOUR NETLIFY SITE URL HERE'
+                CI_ENVIRONMENT_URL = 'https://66d8235b93eedb67cc81b667--stunning-froyo-2af8b0.netlify.app/'
             }
 
             steps {
