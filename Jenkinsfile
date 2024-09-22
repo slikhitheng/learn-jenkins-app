@@ -2,44 +2,29 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('w/odocker') {
+            steps {
+                sh '''
+                    echo 'without docker'
+                    ls -la
+                    touch container-no.txt
+                '''
+            }
+        }
+        stage('w docker') {
             agent {
                 docker {
-                    image "node:18-alpine"
-                    reuseNode true
+                    image 'node:18-alpine'
+                    args '-u root' // Optional: Run as root user if needed
                 }
             }
             steps {
                 sh '''
-                   ls -la
-                   node --version
-                   npm --version
-                   npm ci
-                   npm run build
-                   ls -la
-                   '''
+                    echo 'with docker'
+                    ls -la
+                    touch container-yes.txt
+                '''
             }
-        }
-
-        stage('Test') {
-            agent {
-                docker {
-                    image "node:18-alpine"
-                    reuseNode true
-                }
-            }
-            steps {
-                echo "Testing Stage"
-                sh '''
-                     test -f build/index.html && echo "File exists" || echo "File does not exist"
-                     npm test
-                     '''
-            }
-        }
-    }
-    post{
-        always{
-            junit 'test-results/junit.xml'
         }
     }
 }
