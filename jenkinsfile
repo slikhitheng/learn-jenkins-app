@@ -1,12 +1,10 @@
 pipeline {
-    agent { label 'ubuntu-latest' }  // Use an Ubuntu agent
+    agent { label 'ubuntu-latest' }
 
     stages {
         stage('Setup Python') {
             steps {
                 script {
-                    // Use the appropriate steps to install Python, as Jenkins does not have an equivalent of 'UsePythonVersion@0'
-                    // Assuming Python is already installed in the agent, you can directly verify the version if needed:
                     sh 'python --version'
                 }
             }
@@ -15,7 +13,6 @@ pipeline {
         stage('Install Locust') {
             steps {
                 script {
-                    // Upgrade pip and install locust
                     sh '''
                         python -m pip install --upgrade pip
                         pip install locust
@@ -27,7 +24,6 @@ pipeline {
         stage('Run Locust Load Test') {
             steps {
                 script {
-                    // Run the Locust load test
                     sh '''
                         locust -f locustfile.py --headless -u 10 -r 2 --run-time 1m --csv=locust_report --html=locust_report.html
                     '''
@@ -37,16 +33,9 @@ pipeline {
 
         stage('Publish Reports') {
             steps {
-                // Archive the HTML and CSV reports as artifacts
                 archiveArtifacts artifacts: 'locust_report.html', allowEmptyArchive: true
                 archiveArtifacts artifacts: 'locust_report_stats.csv', allowEmptyArchive: true
             }
-        }
-    }
-
-    post {
-        always {
-            // Clean up, send notifications, etc.
         }
     }
 }
