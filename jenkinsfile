@@ -7,6 +7,8 @@ pipeline {
                 script {
                     // Check Python version
                     sh 'python --version'
+                    sh 'sudo apt-get install python3'
+                    sh 'sudo apt-get install python3-pip'
                 }
             }
         }
