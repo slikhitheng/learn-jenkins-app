@@ -1,24 +1,17 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.9' // Use the official Python Docker image
+        }
+    }
 
     stages {
-        stage('Setup Python') {
-            steps {
-                script {
-                    // Check Python version without sudo
-                    sh 'apt-get update'
-                    sh 'apt-get install -y python3 python3-pip'
-                    sh 'python3 --version'
-                }
-            }
-        }
-
         stage('Install Locust') {
             steps {
                 script {
-                    // Install pip and locust without sudo
+                    // Install pip and locust within the Python Docker container
                     sh '''
-                        python3 -m pip install --upgrade pip
+                        python -m pip install --upgrade pip
                         pip install locust
                     '''
                 }
@@ -28,7 +21,7 @@ pipeline {
         stage('Run Locust Load Test') {
             steps {
                 script {
-                    // Run locust tests
+                    // Run Locust tests
                     sh '''
                         locust -f locustfile.py --headless -u 10 -r 2 --run-time 1m --csv=locust_report --html=locust_report.html
                     '''
@@ -38,7 +31,7 @@ pipeline {
 
         stage('Publish Reports') {
             steps {
-                // Publish Locust HTML and CSV reports
+                // Archive Locust HTML and CSV reports
                 archiveArtifacts artifacts: 'locust_report.html', allowEmptyArchive: true
                 archiveArtifacts artifacts: 'locust_report_stats.csv', allowEmptyArchive: true
             }
@@ -47,7 +40,6 @@ pipeline {
 
     post {
         always {
-            // Clean-up step
             echo 'Pipeline finished, performing clean-up or sending notifications if necessary.'
         }
     }
