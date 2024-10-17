@@ -1,37 +1,52 @@
-trigger:
-  branches:
-    include:
-      - main
+pipeline {
+    agent { label 'ubuntu-latest' }  // Use an Ubuntu agent
 
-pool:
-  vmImage: 'ubuntu-latest'
+    stages {
+        stage('Setup Python') {
+            steps {
+                script {
+                    // Use the appropriate steps to install Python, as Jenkins does not have an equivalent of 'UsePythonVersion@0'
+                    // Assuming Python is already installed in the agent, you can directly verify the version if needed:
+                    sh 'python --version'
+                }
+            }
+        }
 
-steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.x'
-      addToPath: true
+        stage('Install Locust') {
+            steps {
+                script {
+                    // Upgrade pip and install locust
+                    sh '''
+                        python -m pip install --upgrade pip
+                        pip install locust
+                    '''
+                }
+            }
+        }
 
-  - script: |
-      python -m pip install --upgrade pip
-      pip install locust
-    displayName: 'Install Locust'
+        stage('Run Locust Load Test') {
+            steps {
+                script {
+                    // Run the Locust load test
+                    sh '''
+                        locust -f locustfile.py --headless -u 10 -r 2 --run-time 1m --csv=locust_report --html=locust_report.html
+                    '''
+                }
+            }
+        }
 
-  # Locust Test ausführen
-  - script: |
-      locust -f locustfile.py --headless -u 10 -r 2 --run-time 1m --csv=locust_report --html=locust_report.html
-    displayName: 'Run Locust Load Test'
-  
-  # Generiere den Bericht als Pipeline-Artefakt
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Build.SourcesDirectory)/locust_report.html'
-      artifact: 'LocustReport'
-    displayName: 'Publish Locust HTML Report'
+        stage('Publish Reports') {
+            steps {
+                // Archive the HTML and CSV reports as artifacts
+                archiveArtifacts artifacts: 'locust_report.html', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'locust_report_stats.csv', allowEmptyArchive: true
+            }
+        }
+    }
 
-  # Optional: Speichere den CSV-Bericht auch als Artefakt
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Build.SourcesDirectory)/locust_report_stats.csv'
-      artifact: 'LocustCSVReport'
-    displayName: 'Publish Locust CSV Report'
+    post {
+        always {
+            // Clean up, send notifications, etc.
+        }
+    }
+}
