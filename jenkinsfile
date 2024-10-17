@@ -5,6 +5,7 @@ pipeline {
         stage('Setup Python') {
             steps {
                 script {
+                    // Check Python version
                     sh 'python --version'
                 }
             }
@@ -13,6 +14,7 @@ pipeline {
         stage('Install Locust') {
             steps {
                 script {
+                    // Install pip and locust
                     sh '''
                         python -m pip install --upgrade pip
                         pip install locust
@@ -24,6 +26,7 @@ pipeline {
         stage('Run Locust Load Test') {
             steps {
                 script {
+                    // Run locust tests
                     sh '''
                         locust -f locustfile.py --headless -u 10 -r 2 --run-time 1m --csv=locust_report --html=locust_report.html
                     '''
@@ -33,9 +36,17 @@ pipeline {
 
         stage('Publish Reports') {
             steps {
+                // Publish Locust HTML and CSV reports
                 archiveArtifacts artifacts: 'locust_report.html', allowEmptyArchive: true
                 archiveArtifacts artifacts: 'locust_report_stats.csv', allowEmptyArchive: true
             }
+        }
+    }
+
+    post {
+        always {
+            // Add a simple step to fix the error
+            echo 'Pipeline finished, performing clean-up or sending notifications if necessary.'
         }
     }
 }
