@@ -8,15 +8,15 @@ pipeline {
                     image 'node:18-alpine'
                     reuseNode true 
                 }
-                echo 'Hello World'
             }
             steps {
+                echo 'Hello World'
                 sh '''
                     ls -la
                     node --version
                     npm --version
                     npm ci
-                    nmp run build
+                    npm run build
                 '''
             }
         }
