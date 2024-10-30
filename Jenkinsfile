@@ -5,7 +5,6 @@ pipeline {
         NETLIFY_SITE_ID = '05de4f57-37e6-4e25-84e9-9bb725f0d052'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
     }
-    
     stages {
 
         stage('Build') {
@@ -95,26 +94,3 @@ pipeline {
         }
     }
 }
-                stage('ProdE2E') {
-                    agent {
-                        docker {
-                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                            reuseNode true
-                        }
-                    }
-
-                    steps {
-                        sh '''
-                            npm install serve
-                            node_modules/.bin/serve -s build &
-                            sleep 10
-                            npx playwright test  --reporter=html
-                        '''
-                    }
-
-                    post {
-                        always {
-                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-                        }
-                    }
-                }
