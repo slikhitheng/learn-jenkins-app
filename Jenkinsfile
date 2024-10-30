@@ -120,7 +120,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'https://lambent-duckanoo-ebcb72.netlify.app'
+                CI_ENVIRONMENT_URL = 'https://app.netlify.com/sites/lambent-duckanoo-ebcb72/overview'
             }
 
             steps {
