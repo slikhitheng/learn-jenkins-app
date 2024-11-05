@@ -52,7 +52,7 @@ stage('E2E') {
                     npm install -g serve
                     serve -s build &
                     sleep 10
-                    npx playwrite test                  
+                    npx playwright test                  
                 '''
             }
         }
