@@ -24,6 +24,11 @@ pipeline {
         */
         
         stage('Test') {
+            post {
+                always {
+                    junit'yest-results/junit.xml'
+                }
+            }
             agent{
                 docker{
                     image 'node:18-alpine'
@@ -50,17 +55,13 @@ stage('E2E') {
             steps{            
                 sh''' 
                     npm install -g serve
-                    node/modules/.bin/serve -s build &
-                    sleep 10
+                    serve -s build &
+                    sleep 15
                     npx playwright test                  
                 '''
             }
         }
     }
 
-    post {
-        always {
-            junit'jest-results/junit.xml'
-        }
-    }
+
 }
