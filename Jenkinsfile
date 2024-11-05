@@ -21,6 +21,7 @@ pipeline {
                 '''
             }
         }
+        */
         
         stage('Test') {
             agent{
@@ -36,7 +37,7 @@ pipeline {
                 '''
             }
         }
-        */
+        
 
 stage('E2E') {
             agent{
@@ -48,7 +49,8 @@ stage('E2E') {
             steps{            
                 sh''' 
                     npm install -g serve
-                    node_modules/.bin/serve -s build
+                    node_modules/.bin/serve -s build &
+                    sleep 10
                     npx playwrite test                  
                 '''
             }
