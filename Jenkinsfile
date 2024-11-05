@@ -44,13 +44,13 @@ stage('E2E') {
                 docker{
                     image 'mcr.microsoft.com/playwright:v1.48.1-noble'
                     reuseNode true
-                    args '-u root:root'
+                    //args '-u root:root'
                 }
             }
             steps{            
                 sh''' 
                     npm install -g serve
-                    serve -s build &
+                    node/modules/.bin/serve -s build &
                     sleep 10
                     npx playwright test                  
                 '''
