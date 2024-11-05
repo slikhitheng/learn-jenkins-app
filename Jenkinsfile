@@ -44,6 +44,7 @@ stage('E2E') {
                 docker{
                     image 'mcr.microsoft.com/playwright:v1.48.1-noble'
                     reuseNode true
+                    args '-u root:root'
                 }
             }
             steps{            
