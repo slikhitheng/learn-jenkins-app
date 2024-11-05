@@ -59,7 +59,7 @@ stage('E2E') {
     }
     post {
         always {
-            junit'pest-results/junit.xml'
+            junit'lest-results/junit.xml'
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
 
         }
