@@ -60,7 +60,7 @@ stage('E2E') {
 
     post {
         always {
-            junit'test-results/junit.xml'
+            junit'jest-results/junit.xml'
         }
     }
 }
