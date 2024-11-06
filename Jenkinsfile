@@ -43,7 +43,7 @@ stage('E2E') {
             agent{
                 docker{
                     image 'mcr.microsoft.com/playwright:v1.48.1-noble'
-                    //reuseNode true
+                    reuseNode true
                     args '-u root:root'
                 }
             }
@@ -59,9 +59,9 @@ stage('E2E') {
     }
     post {
         always {
-            junit'lest-results/junit.xml'
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-
+            junit'yest-results/junit.xml'
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'play HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+            
         }
     }
 
