@@ -36,25 +36,25 @@ pipeline {
                         sh''' 
                             test -f build/index.html
                             npm test
+                       
                         '''
                     }
+
                     post {
                         always {
                         junit'yest-results/junit.xml'
                         //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'play HTML Report', reportTitles: '', useWrapperFileDirectly: true])         
                     }
-    }
                 }
                 
-
                 stage('E2E') {
                     agent{
                         docker{
                             image 'mcr.microsoft.com/playwright:v1.48.1-noble'
                             reuseNode true
                             args '-u root:root'
+                            }
                         }
-                    }
                     steps{            
                         sh''' 
                             npm install -g serve
@@ -62,8 +62,15 @@ pipeline {
                             sleep 15
                             npx playwright test --reporter=html                  
                         '''
+                        }
+                        }
+                    post {
+                        always {
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'play HTML Report', reportTitles: '', useWrapperFileDirectly: true])         
                     }
+    }
                 }
+             
             }
         }
     }
