@@ -39,14 +39,12 @@ pipeline {
                        
                         '''
                     }
-
                     post {
                         always {
                         junit'yest-results/junit.xml'
                         //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'play HTML Report', reportTitles: '', useWrapperFileDirectly: true])         
                     }
-                }
-                
+
                 stage('E2E') {
                     agent{
                         docker{
@@ -69,6 +67,7 @@ pipeline {
                         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'play HTML Report', reportTitles: '', useWrapperFileDirectly: true])         
                     }
     }
+                }
                 }
              
             }
