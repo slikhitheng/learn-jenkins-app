@@ -7,6 +7,7 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
+                    args '-u root:root'
                 }
             }
             steps {
@@ -81,7 +82,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli -g
+                    npm install netlify-cli
                     netlify --version
                 '''
             }
