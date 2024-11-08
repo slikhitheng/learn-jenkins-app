@@ -3,21 +3,22 @@ pipeline {
 
     stages {
         /*
+
         stage('Build') {
-            agent{
-                docker{
+            agent {
+                docker {
                     image 'node:18-alpine'
                     reuseNode true
                 }
             }
             steps {
                 sh '''
-                ls -la
-                node --version
-                npm ---version
-                npm ci
-                npm run build
-                ls -la 
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
                 '''
             }
         }
@@ -25,51 +26,50 @@ pipeline {
 
         stage('Tests') {
             parallel {
-                stage('Unit test') {
-                    agent{
-                        docker{
+                stage('Unit tests') {
+                    agent {
+                        docker {
                             image 'node:18-alpine'
                             reuseNode true
                         }
                     }
-                    steps{            
-                        sh''' 
-                            test -f build/index.html
+
+                    steps {
+                        sh '''
+                            #test -f build/index.html
                             npm test
-                       
                         '''
                     }
                     post {
                         always {
-                        junit'yest-results/junit.xml'
-                        //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'play HTML Report', reportTitles: '', useWrapperFileDirectly: true])         
+                            junit 'jest-results/junit.xml'
+                        }
                     }
+                }
 
                 stage('E2E') {
-                    agent{
-                        docker{
-                            image 'mcr.microsoft.com/playwright:v1.48.1-noble'
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                             reuseNode true
-                            args '-u root:root'
-                            }
                         }
-                    steps{            
-                        sh''' 
-                            npm install -g serve
-                            serve -s build &
-                            sleep 15
-                            npx playwright test --reporter=html                  
+                    }
+
+                    steps {
+                        sh '''
+                            npm install serve
+                            node_modules/.bin/serve -s build &
+                            sleep 10
+                            npx playwright test  --reporter=html
                         '''
-                        }
-                        }
+                    }
+
                     post {
                         always {
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'play HTML Report', reportTitles: '', useWrapperFileDirectly: true])         
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                        }
                     }
-    }
                 }
-                }
-             
             }
         }
     }
