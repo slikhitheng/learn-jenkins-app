@@ -1,5 +1,7 @@
 pipeline {
     agent any
+
+    stages {
         stage('w/ docker') {
             agent {
                 docker {
@@ -16,3 +18,5 @@ pipeline {
             }
         }
     }
+}
+
