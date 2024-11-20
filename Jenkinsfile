@@ -37,6 +37,7 @@ pipeline {
                         docker {
                             image 'my-playwright'
                             reuseNode true
+                            args '-u root:root'
                         }
                     }
 
