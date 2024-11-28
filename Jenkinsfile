@@ -1,7 +1,7 @@
 pipeline{
     stages{
         stage(('Test'){
-            echo "Hello"
+            echo "Hello World"
         }
     }
 }
