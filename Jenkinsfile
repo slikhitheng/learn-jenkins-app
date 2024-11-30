@@ -2,9 +2,6 @@ pipeline {
     agent any
 
     stages {
-
-        // This is a comment
-        /*
         stage('Build') {
             agent {
                 docker {
@@ -22,8 +19,7 @@ pipeline {
                     ls -la
                 '''
             }
-        } */
-
+        }
         stage('Run Tests') {
             parallel {
                 stage('Unit Test') {
@@ -65,7 +61,8 @@ pipeline {
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
-                }
+                },
+                failFast: true
             }
         }
     }
