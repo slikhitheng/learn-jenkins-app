@@ -21,7 +21,6 @@ pipeline {
             }
         }
         stage('Run Tests') {
-            fastFail true
             parallel {
                 stage('Unit Test') {
                     agent {
