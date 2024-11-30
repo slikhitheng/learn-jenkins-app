@@ -62,8 +62,8 @@ pipeline {
                         }
                     }
                 }
-            },
-            failFast: true
+                failFast: true
+            }
         }
     }
 }
