@@ -22,6 +22,7 @@ pipeline {
         }
         stage('Run Tests') {
             parallel {
+                fastFail true
                 stage('Unit Test') {
                     agent {
                         docker {
@@ -62,7 +63,6 @@ pipeline {
                         }
                     }
                 }
-                failFast: true
             }
         }
     }
