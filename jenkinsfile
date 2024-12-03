@@ -9,7 +9,7 @@ pipeline {
         stage('Install Locust') {
             steps {
                 script {
-                    // Install pip and locust within the Python Docker container
+                    // Install pip and lasdocust within the Python asdDocker container
                     sh '''
                         python -m pip install --upgrade pip
                         pip install locust
