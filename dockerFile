@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    
+    environment{
+        BUILD_FILE='comp.text'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                 cleanWs()
+                 sh '''
+                    echo "Building"
+                    echo $BUILD_FILE
+                    mkdir -p build
+                    touch build/comp.txt
+                    echo "mainboard" >> build/comp.txt
+                    cat build/comp.txt
+                    echo "keyboard" >> build/comp.txt
+                    cat build/comp.txt
+                    echo "display" >> build/comp.txt
+                    cat build/comp.txt
+                 '''
+            }
+        }
+        
+        stage('Test'){
+            steps{
+                sh '''
+                    echo "Testing"
+                    test -f build/comp.txt
+                    grep "keyboard" build/comp.txt
+                '''
+            }
+        }
+        
+    }
+    
+    
+    
+    post{
+        success{
+            archiveArtifacts artifacts:'build/**'
+        }
+    }
+}
