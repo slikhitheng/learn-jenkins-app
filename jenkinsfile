@@ -24,7 +24,7 @@ pipeline {
             steps{
                 sh '''
                 if [ -f build/index.html ]; then
-                    npm run test
+                    npm test
                 else
                    echo 'not exit'
                 fi
