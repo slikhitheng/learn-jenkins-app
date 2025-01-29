@@ -21,9 +21,15 @@ pipeline {
             }
         }
         stage('Test'){
-            steps{
+            agent {
+                docker {
+                    image 'node:22.13.1-alpine3.21'
+                    reuseNode true
+                }
+            }
+            steps {
                 sh '''
-                if [ -f build/index.html ]; then
+                 -f build/index.html 
                     npm test
                 else
                    echo 'not exit'
