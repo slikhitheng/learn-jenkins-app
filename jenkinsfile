@@ -23,11 +23,11 @@ pipeline {
         stage('Test'){
             steps{
                 sh '''
-
                 if [ -f build/index.html ]; then
                     npm run test
                 else
                    echo 'not exit'
+                fi
                 '''
             }
         }
