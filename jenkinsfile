@@ -38,7 +38,24 @@ pipeline {
             }
         }
 
-        stage('E2E'){
+        // stage('E2E'){
+        //     agent {
+        //         docker {
+        //             image 'mcr.microsoft.com/playwright:v1.50.0-noble'
+        //             reuseNode true
+        //         }
+        //     }
+        //     steps {
+        //         sh '''
+        //         npm install serve
+        //         serve -s build
+        //         npx playwright test
+        //         '''
+        //     }
+        // }
+
+
+        stage('E2E') {
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.50.0-noble'
@@ -48,7 +65,7 @@ pipeline {
             steps {
                 sh '''
                 npm install serve
-                serve -s build
+                npx serve -s build &
                 npx playwright test
                 '''
             }
