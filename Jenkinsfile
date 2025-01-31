@@ -47,7 +47,7 @@ pipeline {
                     npm install serve
                     nohup node_modules/.bin/serve -s build > serve.log 2>&1 &
                     sleep 15
-                    curl -I http://localhost:3000 || { echo "Server failed to start"; exit 1; }
+                    curl -I http://localhost:8080 || { echo "Server failed to start"; exit 1; }
                     npx playwright install --with-deps
                     npx playwright test --reporter=junit,junit-results.xml
                 '''
