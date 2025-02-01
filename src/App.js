@@ -15,7 +15,7 @@ function App() {
           Learn Jenkins on Udemy
         </a>
       </header>
-      <p>
+      <p className='colors'>
           Application version: 1
       </p>
     </div>
