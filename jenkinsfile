@@ -274,7 +274,7 @@ pipeline {
                '''
                script { 
                    env.STAGING_URL = sh(script:" node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json", returnStdout: true)
-            }
+                }
             }
         }
 
@@ -308,25 +308,25 @@ pipeline {
             }
         }
 
-        stage('Deploye To Production') {
-            agent {
-                docker {
-                    image 'node:22.13.1-alpine3.21'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-               npm install netlify-cli
-               node_modules/.bin/netlify --version
-                node_modules/.bin/netlify status
-                node_modules/.bin/netlify deploy --dir=build --prod
+        // stage('Deploye To Production') {
+        //     agent {
+        //         docker {
+        //             image 'node:22.13.1-alpine3.21'
+        //             reuseNode true
+        //         }
+        //     }
+        //     steps {
+        //         sh '''
+        //        npm install netlify-cli
+        //        node_modules/.bin/netlify --version
+        //        node_modules/.bin/netlify status
+        //        node_modules/.bin/netlify deploy --dir=build --prod
 
-                '''
-            }
-        }
+        //         '''
+        //     }
+        // }
 
-        stage('Prod E2E'){
+        stage('Prod deploye'){
 
             environment {
                 CI_ENVIRONMENT_URL = "https://my-own-testing-projects.netlify.app"
@@ -337,10 +337,13 @@ pipeline {
                     reuseNode true
                 }
             }
-
             steps {
                 sh '''
-                npx playwright test --reporter=html
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod
+                    npx playwright test --reporter=html
                 '''
             }
             post {
