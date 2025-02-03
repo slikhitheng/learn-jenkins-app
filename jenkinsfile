@@ -279,15 +279,15 @@ pipeline {
         // }
 
         stage('Staging deploy'){
-            environment {
-                CI_ENVIRONMENT_URL = ""
-                // CI_ENVIRONMENT_URL = "${env.STAGING_URL}"
-            }
+           
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
+            }
+             environment {
+                CI_ENVIRONMENT_URL = "SET_STAGING_URL"
             }
             steps {
                 sh '''
@@ -306,13 +306,13 @@ pipeline {
             }
         }
 
-        stage("Approval"){
-            steps {
-                timeout(time: 15, unit: 'MINUTES') {
-                    input message: 'Do you want to deploye?', ok: 'Yes, i am sure to deploye'
-                }         
-            }
-        }
+        // stage("Approval"){
+        //     steps {
+        //         timeout(time: 15, unit: 'MINUTES') {
+        //             input message: 'Do you want to deploye?', ok: 'Yes, i am sure to deploye'
+        //         }         
+        //     }
+        // }
 
         // stage('Deploye To Production') {
         //     agent {
