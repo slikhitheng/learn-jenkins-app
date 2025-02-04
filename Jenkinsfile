@@ -32,6 +32,7 @@ pipeline {
                     echo "Test stage"
                     test -f build/index.html && echo "Found index.html"
                     ls -la build
+                    npm test
                 '''
             }
         }
