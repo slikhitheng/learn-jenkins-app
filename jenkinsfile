@@ -334,9 +334,9 @@ pipeline {
 
         stage('Prod deploye'){
 
-            // environment {
-            //     CI_ENVIRONMENT_URL = "https://my-own-testing-projects.netlify.app"
-            // }
+            environment {
+                CI_ENVIRONMENT_URL = "https://my-own-testing-projects.netlify.app"
+            }
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
