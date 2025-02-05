@@ -14,7 +14,7 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    npm ci
+                    npm ci --unsafe-perm  # Added to avoid permission issues
                     npm run build
                     ls -la
                 '''
@@ -31,7 +31,7 @@ pipeline {
 
             steps {
                 sh '''
-                    npm ci  # Ensure dependencies are installed
+                    npm ci --unsafe-perm  # Ensure dependencies are installed
                     test -f build/index.html || echo "Warning: build/index.html missing"
                     npm test
                 '''
@@ -50,7 +50,7 @@ pipeline {
                 sh '''
                     npm install serve
                     node_modules/.bin/serve -s build &
-                    sleep 10
+                    sleep 10  # Ensure serve has enough time to start
                     npx playwright test
                 '''
             }
