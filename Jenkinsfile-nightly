@@ -2,9 +2,10 @@ pipeline {
     agent any
     
     stages {
-        stage("Docker"){
+        stage("Build Docker images"){
             steps{
-                sh 'docker build -f ci/Dockerfile -t  myplaywright .'
+                sh 'docker build -f ci/Dockerfile-playwright -t  myplaywright .'
+                sh 'docker build -f ci/Dockerfile-aws-cli -t  my-aws-cli .'
             }
         }
     }
