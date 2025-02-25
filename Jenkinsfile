@@ -36,16 +36,7 @@ pipeline {
             }
         }
     }
-    stages {
-        stage('test') {
-            steps {
-                sh '''
-                    ls -la
-                '''
-            }
-        }
-    }
-
+    
     post {
         always {
             junit './test-results/junit.xml'
