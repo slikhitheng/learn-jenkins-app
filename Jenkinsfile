@@ -21,5 +21,11 @@ pipeline {
                 '''
             }
         }
+
+        stage (test) {
+            sh '''
+                test -f index.html/build
+            '''
+        }
     }
 }
