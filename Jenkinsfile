@@ -24,9 +24,9 @@ pipeline {
         }
         */
 
-        stage (unit tests){
+        stage ('unit tests'){
             parallel {
-                stage (test) {
+                stage ('test') {
                     agent {
                         docker {
                             image 'node:18-alpine'
@@ -48,7 +48,7 @@ pipeline {
             
                 }
 
-                stage (E2E) {
+                stage ('E2E') {
                     agent {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
