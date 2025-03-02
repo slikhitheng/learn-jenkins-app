@@ -25,7 +25,7 @@ pipeline {
         */
 
         stage (unit tests){
-            pararrel {
+            parallel {
                 stage (test) {
                     agent {
                         docker {
