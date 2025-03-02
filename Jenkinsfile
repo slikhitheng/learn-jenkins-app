@@ -5,7 +5,7 @@ pipeline {
         stage('docker') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:23-alpine'
                     reuseNode true
                 }
             }
@@ -36,10 +36,10 @@ pipeline {
             }
         }
     }
-    
-    post {
-        always {
-            junit './test-results/junit.xml'
-        }
-    }
+
+    // post {
+    //     always {
+    //         junit './test-results/junit.xml'
+    //     }
+    // }
 }
