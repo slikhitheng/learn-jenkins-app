@@ -25,6 +25,7 @@ pipeline {
                     echo "Test stage"
                     cat build/index.html
                     npm test
+                    echo "Test completed"
                 '''
             }
         }
