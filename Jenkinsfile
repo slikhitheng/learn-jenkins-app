@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Test stage"
-                    touch build/index.html
+                    cat build/index.html
                 '''
             }
         }
