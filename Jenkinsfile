@@ -14,7 +14,6 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    // npm ci will install all dependencies like npm i
                     npm ci
                     npm run build
                     ls -la
