@@ -14,8 +14,11 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    npm cache clean --force
-                    npm ci
+                '''
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh 'npm ci'
+                }
+                sh '''
                     npm run build
                     ls -la
                 '''
