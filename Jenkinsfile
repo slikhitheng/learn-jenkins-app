@@ -14,7 +14,6 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    ping -c 4 registry.npmjs.org
                     npm cache clean --force
                     npm ci
                     npm run build
