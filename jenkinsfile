@@ -1,0 +1,46 @@
+pipeline {
+    agent {
+        docker {
+            image 'python:3.9' // Use the official Python Docker image
+        }
+    }
+
+    stages {
+        stage('Install Locust') {
+            steps {
+                script {
+                    // Install pip and lasdocust within the Python asdDocker container
+                    sh '''
+                        python -m pip install --upgrade pip
+                        pip install locust
+                    '''
+                }
+            }
+        }
+
+        stage('Run Locust Load Test') {
+            steps {
+                script {
+                    // Run Locust tests
+                    sh '''
+                        locust -f locustfile.py --headless -u 10 -r 2 --run-time 1m --csv=locust_report --html=locust_report.html
+                    '''
+                }
+            }
+        }
+
+        stage('Publish Reports') {
+            steps {
+                // Archive Locust HTML and CSV reports
+                archiveArtifacts artifacts: 'locust_report.html', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'locust_report_stats.csv', allowEmptyArchive: true
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished, performing clean-up or sending notifications if necessary.'
+        }
+    }
+}

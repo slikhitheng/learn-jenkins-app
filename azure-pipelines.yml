@@ -1,0 +1,28 @@
+trigger:
+- main
+
+pool:
+  name: Mert
+
+steps:
+- script: |
+    echo Pulling Node.js Docker image...
+    docker pull node:14
+  displayName: 'Pull Node.js Docker Image'
+
+- script: |
+    echo Pulling ZAP Docker image...
+    docker pull zaproxy/zap-stable
+  displayName: 'Pull ZAP Docker Image'
+
+- script: |
+    echo Running ZAP Traditional Spider scan...
+    docker run --rm -v "$(System.DefaultWorkingDirectory):C:/zap/wrk/" zaproxy/zap-stable zap.sh ^
+      -cmd -quickurl http://gbs.com.com -quickout C:/zap/wrk/report_spider.html
+  displayName: 'Run Traditional Spider Scan'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Spider Scan Report'
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)\report_spider.html'
+    ArtifactName: 'report_spider.html'
