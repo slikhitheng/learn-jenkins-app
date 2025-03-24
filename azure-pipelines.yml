@@ -3,33 +3,42 @@ trigger:
 
 pool:
   name: Mert
-  vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
-- task: UseDotNet@2
+- task: NodeTool@0
+  displayName: 'Use Node 14.x'
   inputs:
-    packageType: 'sdk'
-    version: '5.x'
-  displayName: 'Install .NET SDK'
+    versionSpec: 14.x
+    checkLatest: true
 
 - script: |
-    sudo apt-get update
-    sudo apt-get install -y zaproxy
-  displayName: 'Install ZAP'
+    echo Installing Docker...
+    choco install docker-cli
+  displayName: 'Install Docker'
 
 - script: |
-    zap.sh -daemon -port 8080 -config api.disablekey=true
-    zap-cli status -t 120
-    zap-cli open-url http://gbs.com
-    zap-cli spider http://gbs.com
-    zap-cli active-scan http://gbs.com
-    zap-cli report -o zap_report.html -f html
-  displayName: 'Run ZAP Scan'
+    echo Pulling ZAP Docker image...
+    docker pull owasp/zap2docker-stable
+  displayName: 'Pull ZAP Docker Image'
+
+- script: |
+    echo Running ZAP Spider scan...
+    docker run -v %cd%:/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -quickurl http://gbs.com -quickout /zap/wrk/report_spider.html
+  displayName: 'Run Traditional Spider Scan'
+
+- script: |
+    echo Running ZAP AJAX Spider scan...
+    docker run -v %cd%:/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -quickurl http://gbs.com -quickout /zap/wrk/report_ajax.html -quickspider ajax
+  displayName: 'Run AJAX Spider Scan'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Spider Scan Report'
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/report_spider.html'
+    ArtifactName: 'report_spider.html'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish AJAX Spider Scan Report'
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/report_ajax.html'
+    ArtifactName: 'report_ajax.html'
