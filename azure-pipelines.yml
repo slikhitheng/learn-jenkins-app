@@ -1,13 +1,9 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
 pool:
   name: Mert
+  vmImage: ubuntu-latest
 
 steps:
 - script: echo Hello, world!
@@ -17,3 +13,23 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '5.x'
+  displayName: 'Install .NET SDK'
+
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y zaproxy
+  displayName: 'Install ZAP'
+
+- script: |
+    zap.sh -daemon -port 8080 -config api.disablekey=true
+    zap-cli status -t 120
+    zap-cli open-url http://gbs.com
+    zap-cli spider http://gbs.com
+    zap-cli active-scan http://gbs.com
+    zap-cli report -o zap_report.html -f html
+  displayName: 'Run ZAP Scan'
