@@ -5,11 +5,10 @@ pool:
   name: Mert
 
 steps:
-- task: NodeTool@0
-  displayName: 'Use Node 14.x'
-  inputs:
-    versionSpec: 14.x
-    checkLatest: true
+- script: |
+    echo Pulling Node.js Docker image...
+    docker pull node:14
+  displayName: 'Pull Node.js Docker Image'
 
 - script: |
     echo Pulling ZAP Docker image...
@@ -17,23 +16,13 @@ steps:
   displayName: 'Pull ZAP Docker Image'
 
 - script: |
-    echo Running ZAP Spider scan...
-    docker run -v %cd%:/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -quickurl http://yourapplicationurl.com -quickout /zap/wrk/report_spider.html
+    echo Running ZAP Traditional Spider scan...
+    docker run --rm -v "$(System.DefaultWorkingDirectory):C:/zap/wrk/" zaproxy/zap-stable zap.sh ^
+      -cmd -quickurl http://gbs.com.com -quickout C:/zap/wrk/report_spider.html
   displayName: 'Run Traditional Spider Scan'
-
-- script: |
-    echo Running ZAP AJAX Spider scan...
-    docker run -v %cd%:/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -quickurl http://yourapplicationurl.com -quickout /zap/wrk/report_ajax.html -quickspider ajax
-  displayName: 'Run AJAX Spider Scan'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Spider Scan Report'
   inputs:
-    PathtoPublish: '$(System.DefaultWorkingDirectory)/report_spider.html'
+    PathtoPublish: '$(System.DefaultWorkingDirectory)\report_spider.html'
     ArtifactName: 'report_spider.html'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish AJAX Spider Scan Report'
-  inputs:
-    PathtoPublish: '$(System.DefaultWorkingDirectory)/report_ajax.html'
-    ArtifactName: 'report_ajax.html'
