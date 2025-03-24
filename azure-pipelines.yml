@@ -13,7 +13,7 @@ steps:
 
 - script: |
     echo Pulling ZAP Docker image...
-    docker pull owasp/zap2docker-stable
+    docker pull zaproxy/zap-stable
   displayName: 'Pull ZAP Docker Image'
 
 - script: |
