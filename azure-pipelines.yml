@@ -12,13 +12,6 @@ steps:
     checkLatest: true
 
 - script: |
-    echo Installing Docker...
-    Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe
-    Start-Process -Wait -FilePath DockerDesktopInstaller.exe -ArgumentList "/install", "/quiet"
-    Remove-Item -Force DockerDesktopInstaller.exe
-  displayName: 'Install Docker'
-
-- script: |
     echo Pulling ZAP Docker image...
     docker pull owasp/zap2docker-stable
   displayName: 'Pull ZAP Docker Image'
