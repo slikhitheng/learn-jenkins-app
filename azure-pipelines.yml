@@ -13,7 +13,9 @@ steps:
 
 - script: |
     echo Installing Docker...
-    choco install docker-cli
+    Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe
+    Start-Process -Wait -FilePath DockerDesktopInstaller.exe -ArgumentList "/install", "/quiet"
+    Remove-Item -Force DockerDesktopInstaller.exe
   displayName: 'Install Docker'
 
 - script: |
@@ -23,12 +25,12 @@ steps:
 
 - script: |
     echo Running ZAP Spider scan...
-    docker run -v %cd%:/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -quickurl http://gbs.com -quickout /zap/wrk/report_spider.html
+    docker run -v %cd%:/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -quickurl http://yourapplicationurl.com -quickout /zap/wrk/report_spider.html
   displayName: 'Run Traditional Spider Scan'
 
 - script: |
     echo Running ZAP AJAX Spider scan...
-    docker run -v %cd%:/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -quickurl http://gbs.com -quickout /zap/wrk/report_ajax.html -quickspider ajax
+    docker run -v %cd%:/zap/wrk/:rw -t owasp/zap2docker-stable zap.sh -cmd -quickurl http://yourapplicationurl.com -quickout /zap/wrk/report_ajax.html -quickspider ajax
   displayName: 'Run AJAX Spider Scan'
 
 - task: PublishBuildArtifacts@1
