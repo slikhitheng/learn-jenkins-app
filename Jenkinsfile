@@ -10,8 +10,9 @@ pipeline {
             steps {
                 sh '''
                 echo "Hello from Jenkins"
-                npm --version 
                 test -f build/index.html && echo "Файл найден, все хорошо"
+                npm install
+                npm --version 
                 npm test
                 '''
             }
