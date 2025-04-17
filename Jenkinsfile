@@ -6,7 +6,8 @@ pipeline {
             steps {
                 sh '''
                 echo "Hello from Jenkins"
-                test -f build/index.html && echo "Файл найден "
+                test -f build/index.html && echo "Файл найден"
+                npm test
                 '''
             }
         }
