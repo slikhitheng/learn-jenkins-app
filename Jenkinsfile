@@ -1,6 +1,6 @@
 pipeline {
-    agent{
-        docker{
+    agent {
+        docker {
             image 'node:18'
         }
     }
@@ -10,8 +10,8 @@ pipeline {
             steps {
                 sh '''
                 echo "Hello from Jenkins"
-                test -f build/index.html && echo "Файл найден"
-                npm --version
+                npm --version 
+                test -f build/index.html && echo "Файл найден, все хорошо"
                 npm test
                 '''
             }
