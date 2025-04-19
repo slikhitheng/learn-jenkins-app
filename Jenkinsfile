@@ -58,6 +58,7 @@ pipeline {
                     steps{
                         sh '''
                             echo 'hello world'
+                            echo 'hello world'
                             npm install serve
                             node_modules/.bin/serve -s build &
                             sleep 20
