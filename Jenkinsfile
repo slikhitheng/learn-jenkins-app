@@ -25,7 +25,7 @@ pipeline {
             steps{
                 sh'''
                 echo "Test stage"
-                if [ test -f build/index.html ]; then
+                if [ -f build/index.html ]; then
                    echo "found the file"
                 fi
                 npm  test
