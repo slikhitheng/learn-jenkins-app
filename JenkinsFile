@@ -20,11 +20,11 @@ pipeline {
                 '''
             }
         }
-        stage('test') {
+        stage('Test') {
             steps {
                 sh '''
                     ls -la
-                    node --version
+                    sh 'test -f build/index.html'
                     echo "Start Testing"
                 '''
             }
