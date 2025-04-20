@@ -32,6 +32,7 @@ pipeline {
                     ls -la
                     test -f build/index.html
                     echo "Start Testing"
+                    npm test
                 '''
             }
         }
