@@ -8,7 +8,7 @@ pipeline {
 
     stages {
 
-        
+        /*        
         stage('Build') {
             agent {
                 docker {
@@ -76,7 +76,7 @@ pipeline {
                 }
             }
         }
-        
+        */
         stage('deploy staging') {
             agent {
                 docker {
@@ -131,8 +131,8 @@ pipeline {
                 }
 
                 environment{
-                NETLIFY_SITE_ID = '0564507d-66f9-4c48-a744-453f6ac6afed'
-                NETLIFY_AUTH_TOKEN =  credentials('netlify-token')
+               // NETLIFY_SITE_ID = '0564507d-66f9-4c48-a744-453f6ac6afed'
+               // NETLIFY_AUTH_TOKEN =  credentials('netlify-token')
                 CI_ENVIRONMENT_URL = 'https://superlative-kataifi-bc2e4d.netlify.app/'
                 }
 
