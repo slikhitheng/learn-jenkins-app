@@ -94,8 +94,44 @@ pipeline {
                    node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
                    node_modules/.bin/node-jq -r .deploy_url  deploy-output.json
                 '''
+            script{
+                env.STAGINING_URL = sh(script: ' node_modules/.bin/node-jq -r .deploy_url  deploy-output.json', returnStdout: true)
             }
-        }
+            }
+           
+        } 
+
+        stage('staging E2E') {
+                agent {
+                    docker {
+                        image 'mcr.microsoft.com/playwright:v1.39.0-focal'
+                        reuseNode true
+                    }
+                }
+
+                environment{
+               // NETLIFY_SITE_ID = '0564507d-66f9-4c48-a744-453f6ac6afed'
+               // NETLIFY_AUTH_TOKEN =  credentials('netlify-token')
+                CI_ENVIRONMENT_URL = "$env.STAGINING_URL"
+                }
+
+
+                steps {
+                    sh '''
+                        echo "check the netlify website"
+                        npx playwright test  --reporter=html
+                    '''
+                }
+
+                post {
+                    always {
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright staging E2E Report', reportTitles: '', useWrapperFileDirectly: true])
+                    }
+                }
+            }
+
+        
+        
         stage('Approval') {
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
