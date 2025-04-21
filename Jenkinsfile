@@ -88,6 +88,7 @@ pipeline {
             }
             steps {
                 sh '''
+                   echo "small changes"
                    npm install netlify-cli 
                    node_modules/.bin/netlify --version
                    echo "this is the production site env ${NETLIFY_SITE_ID}"
