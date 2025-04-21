@@ -89,7 +89,7 @@ pipeline {
                 sh '''
                    npm install netlify-cli 
                    node_modules/.bin/netlify --version
-                   echo"this is the production site env $(NETLIFY_SITE_ID)"
+                   echo "this is the production site env ${NETLIFY_SITE_ID}"
                 '''
             }
         }
