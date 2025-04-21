@@ -97,6 +97,34 @@ pipeline {
                 '''
             }
         }
-        
+
+        stage('Prod E2E') {
+                agent {
+                    docker {
+                        image 'mcr.microsoft.com/playwright:v1.39.0-focal'
+                        reuseNode true
+                    }
+                }
+
+                environment{
+                NETLIFY_SITE_ID = '0564507d-66f9-4c48-a744-453f6ac6afed'
+                NETLIFY_AUTH_TOKEN =  credentials('netlify-token')
+                CI_ENVIRONMENT_URL = 'https://superlative-kataifi-bc2e4d.netlify.app/'
+                }
+
+
+                steps {
+                    sh '''
+                        
+                        npx playwright test  --reporter=html
+                    '''
+                }
+
+                post {
+                    always {
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright E2E Report', reportTitles: '', useWrapperFileDirectly: true])
+                    }
+                }
+            }
     }
 }
