@@ -115,7 +115,7 @@ pipeline {
 
                 steps {
                     sh '''
-                        
+                        echo"check the netlify website"
                         npx playwright test  --reporter=html
                     '''
                 }
