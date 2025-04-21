@@ -97,6 +97,14 @@ pipeline {
                 '''
             }
         }
+        stage('Approval') {
+            
+            steps {
+               timeout(time: 1, unit: 'MINUTES') {
+             input message: 'ready to deploy?', ok: 'Yes i am sure i want to deploy !'
+            }
+        }
+            
         stage('deploy proud') {
             agent {
                 docker {
@@ -144,5 +152,7 @@ pipeline {
                     }
                 }
             }
+    
     }
+}
 }
