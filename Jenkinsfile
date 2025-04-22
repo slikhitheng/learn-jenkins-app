@@ -95,12 +95,11 @@ pipeline {
             steps {
                 sh '''
                    echo "small changes"
-                   npm install netlify-cli node-jq
-                   node_modules/.bin/netlify --version
+                   netlify --version
                    echo "deploying the staging: ${NETLIFY_SITE_ID}"
-                   node_modules/.bin/netlify status
-                   node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
-                   node_modules/.bin/node-jq -r .deploy_url  deploy-output.json
+                   netlify status
+                   netlify deploy --dir=build --json > deploy-output.json
+                   node-jq -r .deploy_url  deploy-output.json
                 '''
             script{
                 env.STAGINING_URL = sh(script: ' node_modules/.bin/node-jq -r .deploy_url  deploy-output.json', returnStdout: true)
