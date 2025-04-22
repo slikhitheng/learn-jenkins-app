@@ -7,7 +7,13 @@ pipeline {
     }
 
     stages {
-
+        stage('Approval') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    input message: 'Ready to Deploy?', ok: 'Да, я готов к развертыванию'
+                }
+            }
+        }
         stage('Build') {
             parallel {
                 stage('Test 1') {
