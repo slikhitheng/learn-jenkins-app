@@ -7,6 +7,14 @@ pipeline {
     }
 
     stages {
+        stage('Docekr'){
+            steps{
+                sh'''
+                docker image build -t my-playwright .
+
+                '''
+            }
+        }
 
         /*        
         stage('Build') {
