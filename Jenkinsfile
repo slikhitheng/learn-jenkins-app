@@ -77,8 +77,6 @@ pipeline {
             }
         }
         */
-
-        /*
         stage('deploy staging') {
             agent {
                 docker {
@@ -102,9 +100,8 @@ pipeline {
             }
            
         } 
-        */
 
-        stage('deploy staging') {
+        stage('staging E2E') {
                 agent {
                     docker {
                         image 'mcr.microsoft.com/playwright:v1.39.0-focal'
@@ -121,16 +118,8 @@ pipeline {
 
                 steps {
                     sh '''
-                   echo "small changes"
-                   npm install netlify-cli node-jq
-                   node_modules/.bin/netlify --version
-                   echo "deploying the staging: ${NETLIFY_SITE_ID}"
-                   node_modules/.bin/netlify status
-                   node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
-                   node_modules/.bin/node-jq -r .deploy_url  deploy-output.json
-                   echo "check the netlify website"
-                   CI_ENVIRONMENT_URL=${  node_modules/.bin/node-jq -r .deploy_url  deploy-output.json}
-                   npx playwright test  --reporter=html
+                        echo "check the netlify website"
+                        npx playwright test  --reporter=html
                     '''
                 }
 
@@ -151,7 +140,6 @@ pipeline {
             }
 
         }
-        /*
         stage('deploy proud') {
             agent {
                 docker {
@@ -170,9 +158,8 @@ pipeline {
                 '''
             }
         }
-        */
 
-        stage('deploy proud') {
+        stage('Prod E2E') {
                 agent {
                     docker {
                         image 'mcr.microsoft.com/playwright:v1.39.0-focal'
@@ -189,14 +176,8 @@ pipeline {
 
                 steps {
                     sh '''
-                    node --version
-                    npm install netlify-cli 
-                    node_modules/.bin/netlify --version
-                    echo "this is the production site env ${NETLIFY_SITE_ID}"
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod
-                    echo "check the netlify website"
-                    npx playwright test  --reporter=html
+                        echo "check the netlify website"
+                        npx playwright test  --reporter=html
                     '''
                 }
 
