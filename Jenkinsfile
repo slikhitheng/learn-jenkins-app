@@ -140,6 +140,7 @@ pipeline {
             }
 
         }
+        /*
         stage('deploy proud') {
             agent {
                 docker {
@@ -158,8 +159,9 @@ pipeline {
                 '''
             }
         }
+        */
 
-        stage('Prod E2E') {
+        stage('deploy proud') {
                 agent {
                     docker {
                         image 'mcr.microsoft.com/playwright:v1.39.0-focal'
@@ -176,8 +178,14 @@ pipeline {
 
                 steps {
                     sh '''
-                        echo "check the netlify website"
-                        npx playwright test  --reporter=html
+                    node --version
+                    npm install netlify-cli 
+                    node_modules/.bin/netlify --version
+                    echo "this is the production site env ${NETLIFY_SITE_ID}"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod
+                    echo "check the netlify website"
+                    npx playwright test  --reporter=html
                     '''
                 }
 
