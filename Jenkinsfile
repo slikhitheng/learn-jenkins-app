@@ -9,22 +9,42 @@ pipeline {
     stages {
 
         stage('Build') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
+            parallel {
+                stage('Test 1') {
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                            echo 'Small change'
+                            ls -la
+                            node --version
+                            npm --version
+                            npm ci
+                            npm run build
+                            ls -la
+                        '''
+                    }
                 }
-            }
-            steps {
-                sh '''
-                    echo 'Small change'
-                    ls -la
-                    node --version
-                    npm --version
-                    npm ci
-                    npm run build
-                    ls -la
-                '''
+                stage('Hello Byinaksk') {
+                    agent{
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                            echo 'Hello Byinaksk'
+                            echo 'Это проверочный pipeline'
+                            ls
+                            echo 'надеюсь у вас все хорошо, до скорого'
+                        '''
+                    }
+                }
             }
         }
 
