@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment{
-        NETLIFY_SITE_ID = '0564507d-66f9-4c48-a744-453f6ac6afed'
-        NETLIFY_AUTH_TOKEN =  credentials('netlify-token')
+        //NETLIFY_SITE_ID = '0564507d-66f9-4c48-a744-453f6ac6afed'
+       // NETLIFY_AUTH_TOKEN =  credentials('netlify-token')
     }
 
     stages {
@@ -17,6 +17,37 @@ pipeline {
             }
         }
 */     
+ stage('Deploy to AWS'){
+             agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''"
+                    reuseNode true
+                
+                }
+            }
+            environment{
+               // AWS_S3_BUCKET ='learn-jenkins-202504231147'
+            }
+            steps {
+            withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                 sh '''
+                     aws --version
+                   //  aws s3 sync build s3://$AWS_S3_BUCKET
+                     aws ecs register-task-definition --cli-input-json file://aws/Task-defination-prod.json
+        
+                '''
+
+            }
+
+               
+            }
+           
+}
+
+
+
+
         stage('Build') {
             agent {
                 docker {
@@ -36,33 +67,7 @@ pipeline {
             }
         }
 
-        stage('AWS'){
-             agent {
-                docker {
-                    image 'amazon/aws-cli'
-                    args "--entrypoint=''"
-                    reuseNode true
-                
-                }
-            }
-            environment{
-                AWS_S3_BUCKET ='learn-jenkins-202504231147'
-            }
-            steps {
-            withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                 sh '''
-                     aws --version
-                     echo "hello s3 " >> index.html
-                     aws s3 sync build s3://$AWS_S3_BUCKET
-        
-                '''
-
-            }
-
-               
-            }
-           
-        }
+       
 /*
 
         stage('Tests') {

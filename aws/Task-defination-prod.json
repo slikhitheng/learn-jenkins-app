@@ -1,0 +1,26 @@
+{
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "family": "LearJenkinApp-TaskDefination-Prod",
+    "containerDefinitions": [
+        {
+            "name": "LearJenkinsApp",
+            "image": "nginx:1.27.5-alpine3.21-perl",
+            "portMappings": [{
+                
+                "name": "nginx-80-tcp",
+                "containerPort": 80,
+                "hostPort": 80,
+                "protocol": "tcp",
+                "appProtocol": "http"
+            }],
+            "essential": true
+        }
+    ],
+    "volumes": [],
+    "networkMode": "awsvpc",
+    "memory": "512",
+    "cpu": "256",
+    "executionRoleArn": "arn:aws:iam::471112850364:role/ecsTaskExecutionRole"
+}
