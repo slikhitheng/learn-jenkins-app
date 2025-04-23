@@ -117,8 +117,10 @@ pipeline {
             }
         }
         stage('Staging . . . ') {
-            timeout(time: 1, unit: 'MINUTES') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
                 input cancel: 'Нет', message: 'Хотите развернуть на сервере?', ok: 'Да'
+                }
             }
         }
         stage('Deploy prod') {
