@@ -19,8 +19,9 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                  sh '''
                      aws --version
-                     aws s3 ls
-                    
+                     echo "hello s3 " >> index.html
+                     aws s3 cp index.html s3://learn-jenkins-202504231147/index.html
+        
                 '''
 
             }
@@ -29,7 +30,7 @@ pipeline {
             }
            
         }
-
+/*
         stage('Docekr'){
             steps{
                 sh'''
@@ -215,6 +216,6 @@ pipeline {
                         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright E2E Report', reportTitles: '', useWrapperFileDirectly: true])
                     }
                 }
-            }
+            }*/
     }
 }
