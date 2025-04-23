@@ -62,6 +62,7 @@ pipeline {
                             #test -f build/index.html
                             npm test
                         '''
+
                     }
                     post {
                         always {
