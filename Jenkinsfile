@@ -8,25 +8,23 @@ pipeline {
 
     stages {
         stage('Build') {
-            parallel {
-                stage('Test 1') {
-                    agent {
-                        docker {
-                            image 'node:18-alpine'
-                            reuseNode true
-                        }
+            stage('Test 1') {
+                agent {
+                    docker {
+                        image 'node:18-alpine'
+                        reuseNode true
                     }
-                    steps {
-                        sh '''
-                            echo 'Small change'
-                            ls -la
-                            node --version
-                            npm --version
-                            npm ci
-                            npm run build
-                            ls -la
-                        '''
-                    }
+                }
+                steps {
+                    sh '''
+                        echo 'Small change'
+                        ls -la
+                        node --version
+                        npm --version
+                        npm ci
+                        npm run build
+                        ls -la
+                    '''
                 }
             }
         }
