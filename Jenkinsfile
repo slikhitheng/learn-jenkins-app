@@ -28,25 +28,8 @@ pipeline {
                         '''
                     }
                 }
-                stage('Hello Byinaksk') {
-                    agent{
-                        docker {
-                            image 'node:18-alpine'
-                            reuseNode true
-                        }
-                    }
-                    steps {
-                        sh '''
-                            echo 'Hello Byinaksk'
-                            echo 'Это проверочный pipeline'
-                            ls
-                            echo 'надеюсь у вас все хорошо, до скорого'
-                        '''
-                    }
-                }
             }
         }
-
         stage('Tests') {
             parallel {
                 stage('Unit tests') {
