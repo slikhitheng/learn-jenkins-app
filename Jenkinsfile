@@ -7,7 +7,14 @@ pipeline {
     }
 
     stages {
-        
+        stage('Docekr'){
+            steps{
+                sh'''
+                docker image build -t my-playwright .
+
+                '''
+            }
+        }
 
         /*        
         stage('Build') {
@@ -29,7 +36,6 @@ pipeline {
             }
         }
 
-        
         stage('Tests') {
             parallel {
                 stage('Unit tests') {
@@ -89,6 +95,7 @@ pipeline {
             steps {
                 sh '''
                    echo "small changes"
+                   npm install netlify-cli node-jq
                    node_modules/.bin/netlify --version
                    echo "deploying the staging: ${NETLIFY_SITE_ID}"
                    node_modules/.bin/netlify status
