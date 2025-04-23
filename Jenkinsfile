@@ -21,7 +21,7 @@ pipeline {
              agent {
                 docker {
                     image 'amazon/aws-cli'
-                    args "-u root --entrypoint=''"
+                    args "--entrypoint=''"
                     reuseNode true
                 
                 }
@@ -35,14 +35,11 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                  sh '''
                      aws --version
-                     apk update
-                     apk install jq -y
-                     LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/Task-defination-prod.json | jq '.taskDefinition.revision')
-                     echo $LATEST_TD_REVISION
-                     aws ecs update-service \
+                     aws ecs register-task-definition --cli-input-json file://aws/Task-defination-prod.json
+                    aws ecs update-service \
                     --cluster LearnJenkinsApp-Cluster-Prod \
                     --service LearnJenkinsAppService-Prod \
-                    --task-definition LearJenkinApp-TaskDefination-Prod:$LATEST_TD_REVISION
+                    --task-definition LearJenkinApp-TaskDefination-Prod:2
         
                 '''
 
