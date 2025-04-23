@@ -7,6 +7,7 @@ pipeline {
     }
 
     stages {
+        /*
         stage('Docekr'){
             steps{
                 sh'''
@@ -15,7 +16,7 @@ pipeline {
                 '''
             }
         }
-     
+        */
         stage('Build') {
             agent {
                 docker {
@@ -110,7 +111,7 @@ pipeline {
         stage('staging E2E') {
                 agent {
                     docker {
-                        image 'my-playwright'
+                        image 'mcr.microsoft.com/playwright:v1.39.0-focal'
                         reuseNode true
                     }
                 }
@@ -168,7 +169,7 @@ pipeline {
         stage('Prod E2E') {
                 agent {
                     docker {
-                        image 'my-playwright'
+                        image 'mcr.microsoft.com/playwright:v1.39.0-focal'
                         reuseNode true
                     }
                 }
