@@ -41,7 +41,7 @@ pipeline {
                      aws ecs update-service \
                     --cluster LearnJenkinsApp-Cluster-Prod \
                     --service LearnJenkinsAppService-Prod \
-                    --task-definition LearJenkinApp-TaskDefination-Prod:2
+                    --task-definition LearJenkinApp-TaskDefination-Prod:$LATEST_TD_REVISION
         
                 '''
 
