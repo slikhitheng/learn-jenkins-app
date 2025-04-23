@@ -8,26 +8,25 @@ pipeline {
 
     stages {
         stage('Build') {
-            stage('Test 1') {
-                agent {
-                    docker {
-                        image 'node:18-alpine'
-                        reuseNode true
-                    }
-                }
-                steps {
-                    sh '''
-                        echo 'Small change'
-                        ls -la
-                        node --version
-                        npm --version
-                        npm ci
-                        npm run build
-                        ls -la
-                    '''
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
                 }
             }
+            steps {
+                sh '''
+                    echo 'Small change'
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
+            }
         }
+
         stage('Tests') {
             parallel {
                 stage('Unit tests') {
@@ -37,10 +36,8 @@ pipeline {
                             reuseNode true
                         }
                     }
-
                     steps {
                         sh '''
-                            #test -f build/index.html
                             npm test
                         '''
                     }
@@ -88,7 +85,8 @@ pipeline {
 
             environment {
                 CI_ENVIRONMENT_URL = 'STAGING_URL_TO_BE_SET'
-            }   
+            }
+
             steps {
                 sh '''
                     npm install netlify-cli node-jq
@@ -111,11 +109,12 @@ pipeline {
         stage('Staging . . . ') {
             steps {
                 timeout(time: 1, unit: 'HOURS') {
-                input cancel: 'Нет', message: 'Хотите развернуть на сервере?', ok: 'Да'
+                    input cancel: 'Нет', message: 'Хотите развернуть на сервере?', ok: 'Да'
                 }
             }
         }
-        stage('Deploy  prod') {
+
+        stage('Deploy prod') {
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -126,6 +125,7 @@ pipeline {
             environment {
                 CI_ENVIRONMENT_URL = 'https://astounding-meringue-c17c55.netlify.app'
             }
+
             steps {
                 sh '''
                     node --version
