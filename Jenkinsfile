@@ -35,6 +35,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                  sh '''
                      aws --version
+                     yum update
                      yum install jq -y
                      LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/Task-defination-prod.json | jq '.taskDefinition.revision')
                      echo $LATEST_TD_REVISION
