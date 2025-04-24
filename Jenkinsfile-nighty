@@ -11,6 +11,7 @@ pipeline {
             steps {
                 sh '''
                     docker image build -f ci/Dockerfile  -t my-playwright .
+                    docker image build -f ci/Dockerfile aws cli -t my-aws-cli .
                 '''
             }
         }
