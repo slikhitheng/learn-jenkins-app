@@ -42,6 +42,7 @@ pipeline {
             steps {
                 sh '''
                     docker image build   -t myjenkinsapp .
+                    docker image ls
                 '''
             }
         }
