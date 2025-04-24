@@ -1,0 +1,5 @@
+FROM amazon/aws-cli
+RUN yum clean all && \
+    yum makecache && \
+    amazon-linux-extras enable docker && \
+    yum install -y docker
