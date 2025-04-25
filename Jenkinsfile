@@ -4,6 +4,7 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = '29ff0bd0-ce62-4650-9ad4-6f8b1ee032ec'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        REACT_APP_VERSION = '1.2.3'
     }
 
     stages {
@@ -102,14 +103,6 @@ pipeline {
             post {
                 always {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Staging E2E', reportTitles: '', useWrapperFileDirectly: true])
-                }
-            }
-        }
-
-        stage('Staging . . . ') {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    input cancel: 'Нет', message: 'Хотите развернуть на сервере?', ok: 'Да'
                 }
             }
         }
