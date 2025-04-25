@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_SITE_ID = 'YOUR NETLIFY SITE ID'
+        NETLIFY_SITE_ID = '29ff0bd0-ce62-4650-9ad4-6f8b1ee032ec'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
         REACT_APP_VERSION = "1.0.$BUILD_ID"
     }
@@ -91,7 +91,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'https://astounding-meringue-c17c55.netlify.app/'
+                CI_ENVIRONMENT_URL = 'https://astounding-meringue-c17c55.netlify.app'
             }
 
             steps {
@@ -121,7 +121,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'YOUR NETLIFY SITE URL'
+                CI_ENVIRONMENT_URL = 'https://astounding-meringue-c17c55.netlify.app'
             }
 
             steps {
