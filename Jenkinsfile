@@ -29,6 +29,7 @@ pipeline {
         stage('E2E') {
             steps {
                 sh '''
+                    npx playwright install
                     npm install serve
                     node modules/.bin/serve -s build &
                     sleep 10
