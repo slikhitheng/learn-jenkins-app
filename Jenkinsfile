@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'LocalNodeJs'
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -10,6 +14,7 @@ pipeline {
                     npm --version
                     npm ci
                     npm run build
+                    ls -la
                 '''
             }
         }
