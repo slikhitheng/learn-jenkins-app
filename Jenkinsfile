@@ -18,23 +18,27 @@ pipeline {
                 '''
             }
         }
-        stage('Test') {
-            steps {
-                sh '''
-                    echo "Test stage"
-                    npm test
-                '''
-            }
-        }
-        stage('E2E') {
-            steps {
-                sh '''                   
-                    npm install -g serve
-                    serve -s build &
-                    sleep 10
-                    npx playwright install
-                    npx playwright test --reporter=html
-                '''
+        stage('Tests') {
+            parallel {
+                  stage('Unit Test') {
+                      steps {
+                        sh '''
+                            echo "Test stage"
+                            npm test
+                        '''
+                        }
+                    }
+                    stage('E2E') {
+                        steps {
+                            sh '''                   
+                                npm install -g serve
+                                serve -s build &
+                                sleep 10
+                                npx playwright install
+                                npx playwright test --reporter=html
+                            '''
+                        }
+                    }
             }
         }
     }
