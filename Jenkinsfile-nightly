@@ -2,10 +2,16 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Build Docker image') {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'ubuntu:noble'
+                    args '-u root'
+                }
+            }
             steps {
-                sh 'docker build -t my-playwright .'
+                sh 'apt update'
+                sh 'apt install jq -y'
             }
         }
     }
