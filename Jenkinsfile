@@ -5,6 +5,7 @@ pipeline {
         stage('Hello') {
             steps {
                 deleteDir()
+                checkout scm
                 echo 'Hello World!!!!!!!!!'
             }
         }
