@@ -2,10 +2,14 @@ pipeline {
     agent any
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()  // Clean the workspace
+            }
+        }
         stage('Hello') {
             steps {
-                cleanWs()
-                echo 'Hello World!!!!!!!!!'
+                echo 'Hello World!!!!!!!!!'  // Your main pipeline steps go here
             }
         }
     }
