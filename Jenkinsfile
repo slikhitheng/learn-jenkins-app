@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                deleteDir()
+                cleanWs()
                 echo 'Hello World!!!!!!!!!'
             }
         }
