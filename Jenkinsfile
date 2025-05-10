@@ -7,16 +7,7 @@ pipeline {
 				echo 'without docker'
 			}
         }
-		stage ('with docker'){
-			agent {
-				docker{
-					image 'node:18-alpine'
-				}
-			}
-			steps{
-				echo 'with docker'
-			}
-		}
+		
 
     }
 }
