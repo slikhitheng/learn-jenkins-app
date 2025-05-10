@@ -7,17 +7,30 @@ pipeline {
 				echo 'without docker'
 			}
         }
-		stage ('with docker'){
-			agent {
-				docker{
-					image 'node:18-alpine'
+		stage ('parllel'){
+			parallel{
+				stage('stage 1'){
+					agent {
+						docker{
+							image 'node:18-alpine'
+						}
+					}
+					steps{
+						echo 'with docker 1'
+					}
+				}
+				stage('stage 2'){
+					agent {
+						docker{
+							image 'node:18-alpine'
+						}
+					}
+					steps{
+						echo 'with docker 2'
+					}
 				}
 			}
-			steps{
-				echo 'with docker'
-			}
 		}
-
     }
 }
 
