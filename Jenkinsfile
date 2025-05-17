@@ -3,6 +3,11 @@ pipeline {
 
     stages {
         stage('without docker') {
+			when {
+				expression{
+					BRANCH_NAME == 'main'
+				}
+			}
 			steps{
 				echo 'without docker'
 			}
