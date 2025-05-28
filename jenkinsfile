@@ -26,10 +26,12 @@ pipeline {
         }
         */
         stage('Test') {
-            agent {
-                docker {
-                    image 'node:latest'
-                    reuseNode true
+            parallel {
+                 stage('Unit test') {
+                    agent {
+                        docker {
+                            image 'node:latest'
+                            reuseNode true
                 }
             }
             steps {
@@ -54,6 +56,9 @@ pipeline {
             }
             
         }
+            }
+        }
+       
     }
         post{
             always{
