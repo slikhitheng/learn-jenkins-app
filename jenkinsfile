@@ -9,13 +9,11 @@ pipeline {
             agent {
                 docker {
                     image 'node:latest'
-                    args '-u 1000:1000' // Replace with appropriate UID:GID
                     reuseNode true
                 }
             }
             steps {
                 sh '''
-                    whoami
                     ls -la
                     node --version
                     npm --version
