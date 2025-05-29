@@ -17,13 +17,13 @@ pipeline {
                   ls -la
                   node --version
                   npm --version
-                  npm ci --unsafe-perm
+                  npm ci
                   npm run build
                   ls -la
                 '''
             }
         }
-        stage('Test') {
+        stage('Tests') {
             parallel {
                  stage('Unit test') {
                     agent {
@@ -65,7 +65,7 @@ pipeline {
             }
                 steps {
                     sh '''
-                        npm install --unsafe-perm netlify-cli
+                        npm install netlify-cli
                         node_modules/.bin/netlify --version
                         '''
             }
