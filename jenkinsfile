@@ -14,7 +14,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    sudo chown -R jenkins:jenkins /var/lib/jenkins/.npm-global
+                    chown -R jenkins:jenkins /var/lib/jenkins/.npm-global
                     mkdir ~/.npm-global
                     npm config set prefix '~/.npm-global'
                     export PATH=~/.npm-global/bin:$PATH
