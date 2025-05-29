@@ -1,14 +1,12 @@
 pipeline {
     agent any
-     environment {
-      NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
-     }
+
     stages {
 
         stage('Build') {
             agent {
                 docker {
-                    image 'node:latest'
+                    image 'node:18-alpine'
                     reuseNode true
                 }
             }
@@ -17,7 +15,7 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    npm ci --unsafe-perm
+                    npm ci
                     npm run build
                     ls -la
                 '''
@@ -29,7 +27,7 @@ pipeline {
                 stage('Unit tests') {
                     agent {
                         docker {
-                            image 'node:lstest'
+                            image 'node:18-alpine'
                             reuseNode true
                         }
                     }
@@ -50,7 +48,7 @@ pipeline {
                 stage('E2E') {
                     agent {
                         docker {
-                            image 'mcr.microsoft.com/playwright:v1.52.0-noble'
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                             reuseNode true
                         }
                     }
@@ -76,7 +74,7 @@ pipeline {
         stage('Deploy') {
             agent {
                 docker {
-                    image 'node:latest'
+                    image 'node:18-alpine'
                     reuseNode true
                 }
             }
