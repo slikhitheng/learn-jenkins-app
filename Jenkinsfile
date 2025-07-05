@@ -10,8 +10,7 @@ pipeline {
             }
             steps {
                 deleteDir()
-                checkout scm
-                sh '''
+                sh '''#!/bin/sh
                     ls -la 
                     node --version
                     npm --version
