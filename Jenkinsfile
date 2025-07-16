@@ -36,6 +36,23 @@ pipeline {
                 '''
             }
         }
+
+        
+        stage("E2E"){
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwrite:v1.39.0-jammy'
+                    reuseNode true
+                }
+            }
+            steps{
+                sh '''
+                    npm install -g serv
+                    serve -s build
+                    npx playwrite test
+                '''
+            }
+        }
     }
 
     post {
