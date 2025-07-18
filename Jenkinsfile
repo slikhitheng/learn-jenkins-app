@@ -89,7 +89,7 @@
 // }
 
 
-
+// ====================
 
 pipeline {
     agent any
@@ -107,8 +107,8 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    npm install
-                    npm run build || echo "Build failed"
+                    npm ci
+                    npm run build
                     ls -la
                 '''
             }
@@ -121,10 +121,11 @@ pipeline {
                     reuseNode true
                 }
             }
+
             steps {
                 sh '''
                     test -f build/index.html
-                    npm test || echo "Tests failed"
+                    npm test
                 '''
             }
         }
@@ -132,13 +133,63 @@ pipeline {
 
     post {
         always {
-            script {
-                if (fileExists('test-results/junit.xml')) {
-                    junit 'test-results/junit.xml'
-                } else {
-                    echo "No JUnit test results found."
-                }
-            }
+            junit 'test-results/junit.xml'
         }
     }
 }
+
+
+
+// ================
+
+// pipeline {
+//     agent any
+
+//     stages {
+//         stage('Build') {
+//             agent {
+//                 docker {
+//                     image 'node:18-alpine'
+//                     reuseNode true
+//                 }
+//             }
+//             steps {
+//                 sh '''
+//                     ls -la
+//                     node --version
+//                     npm --version
+//                     npm install
+//                     npm run build || echo "Build failed"
+//                     ls -la
+//                 '''
+//             }
+//         }
+
+//         stage('Test') {
+//             agent {
+//                 docker {
+//                     image 'node:18-alpine'
+//                     reuseNode true
+//                 }
+//             }
+//             steps {
+//                 sh '''
+//                     test -f build/index.html
+//                     npm test || echo "Tests failed"
+//                 '''
+//             }
+//         }
+//     }
+
+//     post {
+//         always {
+//             script {
+//                 if (fileExists('test-results/junit.xml')) {
+//                     junit 'test-results/junit.xml'
+//                 } else {
+//                     echo "No JUnit test results found."
+//                 }
+//             }
+//         }
+//     }
+// }
