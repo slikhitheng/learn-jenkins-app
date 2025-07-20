@@ -4,6 +4,10 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = '9ed4aaa5-1d8f-44e7-a08d-c4bc61c77513'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        // Define environment variables for email configuration
+        EMAIL_RECIPIENTS = 'satishjanghel@tranetechnologies.com'
+        EMAIL_SUBJECT_SUCCESS = 'Deployment Successful'
+        EMAIL_SUBJECT_FAILURE = 'Deployment Failed'
     }
  
     stages {
@@ -91,6 +95,28 @@ pipeline {
                     node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --prod
                 '''
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                emailext(
+                    to: "${env.EMAIL_RECIPIENTS}",
+                    subject: "${env.EMAIL_SUBJECT_SUCCESS}",
+                    body: "The deployment was successful.\\n\\nJob: ${env.JOB_NAME}\\nBuild Number: ${env.BUILD_NUMBER}\\nBuild URL: ${env.BUILD_URL}"
+                )
+            }
+        }
+
+        failure {
+            script {
+                emailext(
+                    to: "${env.EMAIL_RECIPIENTS}",
+                    subject: "${env.EMAIL_SUBJECT_FAILURE}",
+                    body: "The deployment failed.\\n\\nJob: ${env.JOB_NAME}\\nBuild Number: ${env.BUILD_NUMBER}\\nBuild URL: ${env.BUILD_URL}"
+                )
             }
         }
     }
