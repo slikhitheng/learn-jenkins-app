@@ -56,15 +56,7 @@ pipeline {
  
                 stage('E2E') {
                     steps {
-                        sh '''
-                            echo "perform E2E tests here.."'
-                        '''
-                    }
- 
-                    post {
-                        always {
-                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-                        }
+                        sh 'echo "Perform E2E test here.."'
                     }
                 }
             }
