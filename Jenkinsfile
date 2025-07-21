@@ -93,7 +93,7 @@ pipeline {
                         <p>Job: ${env.JOB_NAME}</p>
                         <p>Build Number: ${env.BUILD_NUMBER}</p>
                         <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                        <p>Prod URL: <a href="https://satish-jenkins-demo.netlify.app/</a></p>
+                        <p>Website URL: <a href="https://satish-jenkins-demo.netlify.app/></a></p>
                     """
                 )
             }
@@ -106,11 +106,11 @@ pipeline {
                     subject: "${env.EMAIL_SUBJECT_SUCCESS}",
                     mimeType: 'text/html',
                     body: """
-                        <p>The deployment was failed.</p>
+                        <p>The deployment was</p>
                         <p>Job: ${env.JOB_NAME}</p>
                         <p>Build Number: ${env.BUILD_NUMBER}</p>
                         <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                        <p>Prod URL: <a href="https://satish-jenkins-demo.netlify.app/</a></p>
+                        <p>Website URL: <a href="https://satish-jenkins-demo.netlify.app/></a></p>
                     """
                 )
             }
