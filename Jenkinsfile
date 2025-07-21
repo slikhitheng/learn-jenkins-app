@@ -93,7 +93,7 @@ pipeline {
                         <p>Job: ${env.JOB_NAME}</p>
                         <p>Build Number: ${env.BUILD_NUMBER}</p>
                         <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                        <p>Website URL: <a href="https://satish-jenkins-demo.netlify.app/></a></p>
+                        <p>Website URL: https://satish-jenkins-demo.netlify.app</p>
                     """
                 )
             }
@@ -110,7 +110,6 @@ pipeline {
                         <p>Job: ${env.JOB_NAME}</p>
                         <p>Build Number: ${env.BUILD_NUMBER}</p>
                         <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                        <p>Website URL: <a href="https://satish-jenkins-demo.netlify.app/></a></p>
                     """
                 )
             }
