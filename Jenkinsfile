@@ -57,7 +57,7 @@ pipeline {
                 stage('E2E') {
                     steps {
                         sh '''
-                            sh 'echo perform E2E tests here..'
+                            echo "perform E2E tests here.."'
                         '''
                     }
  
