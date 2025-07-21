@@ -95,6 +95,7 @@ pipeline {
                 emailext(
                     to: "${env.EMAIL_RECIPIENTS}",
                     subject: "${env.EMAIL_SUBJECT_SUCCESS}",
+                    mimeType: 'text/html',
                     body: "The deployment was successful.\\n\\nJob: ${env.JOB_NAME}\\nBuild Number: ${env.BUILD_NUMBER}\\nBuild URL: ${env.BUILD_URL}"
                 )
             }
@@ -105,6 +106,7 @@ pipeline {
                 emailext(
                     to: "${env.EMAIL_RECIPIENTS}",
                     subject: "${env.EMAIL_SUBJECT_FAILURE}",
+                    mimeType: 'text/html',
                     body: "The deployment failed.\\n\\nJob: ${env.JOB_NAME}\\nBuild Number: ${env.BUILD_NUMBER}\\nBuild URL: ${env.BUILD_URL}"
                 )
             }
