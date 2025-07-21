@@ -88,7 +88,13 @@ pipeline {
                     to: "${env.EMAIL_RECIPIENTS}",
                     subject: "${env.EMAIL_SUBJECT_SUCCESS}",
                     mimeType: 'text/html',
-                    body: "The deployment was successful.\\n\\nJob: ${env.JOB_NAME}\\nBuild Number: ${env.BUILD_NUMBER}\\nBuild URL: ${env.BUILD_URL}"
+                    body: """
+                        <p>The deployment was successful.</p>
+                        <p>Job: ${env.JOB_NAME}</p>
+                        <p>Build Number: ${env.BUILD_NUMBER}</p>
+                        <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                        <p>Prod URL: <a href="https://satish-jenkins-demo.netlify.app/</a></p>
+                    """
                 )
             }
         }
@@ -97,9 +103,15 @@ pipeline {
             script {
                 emailext(
                     to: "${env.EMAIL_RECIPIENTS}",
-                    subject: "${env.EMAIL_SUBJECT_FAILURE}",
+                    subject: "${env.EMAIL_SUBJECT_SUCCESS}",
                     mimeType: 'text/html',
-                    body: "The deployment failed.\\n\\nJob: ${env.JOB_NAME}\\nBuild Number: ${env.BUILD_NUMBER}\\nBuild URL: ${env.BUILD_URL}"
+                    body: """
+                        <p>The deployment was failed.</p>
+                        <p>Job: ${env.JOB_NAME}</p>
+                        <p>Build Number: ${env.BUILD_NUMBER}</p>
+                        <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                        <p>Prod URL: <a href="https://satish-jenkins-demo.netlify.app/</a></p>
+                    """
                 )
             }
         }
