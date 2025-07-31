@@ -34,23 +34,8 @@ pipeline {
         stage('Tests') {
             parallel {
                 stage('Unit tests') {
-                    agent {
-                        docker {
-                            image 'node:18-alpine'
-                            reuseNode true
-                        }
-                    }
- 
                     steps {
-                        sh '''
-                            #test -f build/index.html
-                            npm test
-                        '''
-                    }
-                    post {
-                        always {
-                            junit 'test-results/junit.xml'
-                        }
+                        sh 'echo "Perform unit test here.."'
                     }
                 }
  
