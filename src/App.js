@@ -11,7 +11,6 @@ function App() {
           href="https://tcc.tis.trane.com/"
           target="_blank"
           rel="noopener noreferrer"
-          color='rgba(51, 164, 49, 1)'
         >
           Prodction Url Command Center
         </a>
