@@ -12,11 +12,11 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Prodction Url Command Center
+          Open Command Center
         </a>
       </header>
       <p>
-          Application version: 1.3
+          Application version: 1.4
       </p>
     </div>
   );
