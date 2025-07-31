@@ -11,12 +11,13 @@ function App() {
           href="https://tcc.tis.trane.com/"
           target="_blank"
           rel="noopener noreferrer"
+          color='rgba(51, 164, 49, 1)'
         >
-          Learn Jenkins for Trane
+          Prodction Url Command Center
         </a>
       </header>
       <p>
-          Application version: 1.2
+          Application version: 1.3
       </p>
     </div>
   );
