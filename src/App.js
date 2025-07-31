@@ -8,15 +8,15 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <a
           className="App-link"
-          href="https://example.com"
+          href="https://tcc.tis.trane.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn Jenkins on Udemy
+          Open Command Center
         </a>
       </header>
       <p>
-          Application version: 1
+          Application version: 1.4
       </p>
     </div>
   );
