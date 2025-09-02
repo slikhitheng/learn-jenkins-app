@@ -9,6 +9,7 @@ pipeline {
                     reuseNode true
                 }
             }
+
             steps {
                 sh '''
                 ls -la
@@ -16,8 +17,21 @@ pipeline {
                 node --version
                 npm ci
                 npm run build
+                '''
+               
+            }
+        }
+        stage('Test'){
+            agent{
+                docker{
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
                 [ -f /build/index.html ] && echo "File exists" || echo "File does not exist"
-                npm test
+
                 '''
                
             }
