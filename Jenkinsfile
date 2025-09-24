@@ -17,6 +17,12 @@ pipeline {
                     npm ci
                     npm run build
                 '''
+
+                stage('Test'){
+                    sh '''
+                     echo 'test'
+                    '''
+                }
             }
         }
     }
