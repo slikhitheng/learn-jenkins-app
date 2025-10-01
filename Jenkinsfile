@@ -31,6 +31,7 @@ pipeline {
                 echo 'Testing the app ...'
                 sh '''
                     test -f $BUILD_DIR/'index.html'
+                    npm test
                 '''
             }
         }
