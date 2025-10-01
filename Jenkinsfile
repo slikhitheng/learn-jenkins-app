@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        BUILD_DIR = 'build'
+        INDEX_HTML = 'index.html'
+    }
+
     stages {
         stage('Build') {
             agent {
@@ -24,6 +29,9 @@ pipeline {
                 stage ('Test') {
             steps {
                 echo 'Testing the app ...'
+                sh '''
+                    test -f $BUILD_DIR/'index.html'
+                '''
             }
         }
 
