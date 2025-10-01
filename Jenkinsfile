@@ -7,6 +7,11 @@ pipeline {
     }
 
     stages {
+        // this is a comment
+        /*
+            this is a block comment
+            second line
+        */
         stage('Build') {
             agent {
                 docker {
@@ -37,7 +42,7 @@ pipeline {
             steps {
                 echo 'Testing the app ...'
                 sh '''
-                    test -f $BUILD_DIR/'index.html'
+                    #test -f $BUILD_DIR/'index.html'  this is of course a linux comment
                     npm test
                 '''
             }
