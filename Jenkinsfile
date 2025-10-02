@@ -31,7 +31,7 @@ pipeline {
             }
         }
 
-        stage ('Test') {
+        stage ('Unit Testing') {
             agent {
                 docker {
                     image 'node:22-alpine'
@@ -47,6 +47,25 @@ pipeline {
                 '''
             }
         }
+
+        stage ('End2End Testing') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                }
+            }
+
+            steps {
+                echo 'Testing the app ...'
+                sh '''
+                    npm install -g serve
+                    serve -s build
+                    npx playwright test
+                '''
+            }
+        }
+
     }
 
     post {
