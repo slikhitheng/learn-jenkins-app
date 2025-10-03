@@ -30,6 +30,7 @@ pipeline {
                 '''
             }
         }
+
         stage ('Run Tests') {
             parallel { 
                 stage ('Unit Testing') {
@@ -79,9 +80,25 @@ pipeline {
                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'E2E - HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
-}
+                }
             }
         }
+
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    npm install netlify-cli -g
+                    netlify --version
+                '''
+            }
+        }
+
     }
 }
  
