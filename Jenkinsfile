@@ -6,7 +6,6 @@ pipeline {
         INDEX_HTML = 'index.html'
         NETLIFY_SITE_ID = 'eb5a1fab-7af2-472e-975a-6cee64e37a47'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-
     }
 
     stages {
@@ -80,7 +79,7 @@ pipeline {
 
                     post {
                         always {
-                           publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'E2E - HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                           publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Local E2E - HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
                 }
@@ -94,6 +93,11 @@ pipeline {
                     reuseNode true
                 }
             }
+            
+            environment {
+                 CI_ENVIRONMENT_URL='https://animated-bubblegum-5728d1.netlify.app'
+            }
+
             steps {
                 sh '''
                     npm install netlify-cli
@@ -102,6 +106,29 @@ pipeline {
                     node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --prod --no-build
                 '''
+            }
+        }
+
+        stage ('Prod E2E Testing') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                    //args '-u root:root' !!! don't do this!!  TO SPECIFY ANOTHER USER & GROUP
+                }
+            }
+
+            steps {
+                echo 'Testing the app in production ...'
+                sh '''
+                    npx playwright test --reporter=html
+                '''
+            }
+
+            post {
+                always {
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PROD E2E - HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                }
             }
         }
     }
