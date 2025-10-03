@@ -93,10 +93,6 @@ pipeline {
                     reuseNode true
                 }
             }
-            
-            environment {
-                 CI_ENVIRONMENT_URL='https://animated-bubblegum-5728d1.netlify.app'
-            }
 
             steps {
                 sh '''
@@ -116,6 +112,10 @@ pipeline {
                     reuseNode true
                     //args '-u root:root' !!! don't do this!!  TO SPECIFY ANOTHER USER & GROUP
                 }
+            }
+            
+            environment {
+                 CI_ENVIRONMENT_URL='https://animated-bubblegum-5728d1.netlify.app'
             }
 
             steps {
