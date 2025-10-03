@@ -30,44 +30,46 @@ pipeline {
                 '''
             }
         }
+        stage ('Run Tests') {
+            parallel { 
+                stage ('Unit Testing') {
+                    agent {
+                        docker {
+                            image 'node:22-alpine'
+                            reuseNode true
+                        }
+                    }
 
-        stage ('Unit Testing') {
-            agent {
-                docker {
-                    image 'node:22-alpine'
-                    reuseNode true
+                    steps {
+                        echo 'Testing the app ...'
+                        sh '''
+                            #test -f $BUILD_DIR/'index.html'  this is of course a linux comment
+                            npm test
+                        '''
+                    }
+                }
+
+                stage ('End2End Testing') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                            //args '-u root:root' !!! don't do this!!  TO SPEWCIFY ANOTHER USER & GROUP
+                        }
+                    }
+
+                    steps {
+                        echo 'Testing the app ...'
+                        sh '''
+                            npm install serve
+                            node_modules/.bin/serve -s build &
+                            sleep 10
+                            npx playwright test --reporter=html
+                        '''
+                    }
                 }
             }
-
-            steps {
-                echo 'Testing the app ...'
-                sh '''
-                    #test -f $BUILD_DIR/'index.html'  this is of course a linux comment
-                    npm test
-                '''
-            }
         }
-
-        stage ('End2End Testing') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    reuseNode true
-                    //args '-u root:root' !!! don't do this!!  TO SPEWCIFY ANOTHER USER & GROUP
-                }
-            }
-
-            steps {
-                echo 'Testing the app ...'
-                sh '''
-                    npm install serve
-                    node_modules/.bin/serve -s build &
-                    sleep 10
-                    npx playwright test --reporter=html
-                '''
-            }
-        }
-
     }
 
     post {
