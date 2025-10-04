@@ -105,6 +105,14 @@ pipeline {
             }
         }
 
+        stage ('Approval') {
+           steps {
+                 timeout(time: 1, unit: 'MINUTES') {
+                    input cancel: 'No, under no circumstances!' message: 'Ready to Deploy?', ok: 'Yes, I am sure I want to deploy!' 
+                }
+            }
+        }
+
         stage('Deploy production') {
             agent {
                 docker {
