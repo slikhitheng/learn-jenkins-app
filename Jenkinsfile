@@ -115,7 +115,7 @@ pipeline {
             }
             
             environment {
-                 CI_ENVIRONMENT_URL='https://animated-bubblegum-5728d1.netlify.app'
+                 CI_ENVIRONMENT_URL='https://production-babsom.netlify.app'
             }
 
             steps {
