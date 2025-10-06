@@ -28,6 +28,6 @@ pipeline {
                 npm test
                 '''
             }
-        }        
+        } 
     }
 }
