@@ -63,7 +63,7 @@ pipeline {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                             reuseNode true
-                            //args '-u root:root' !!! don't do this!!  TO SPEWCIFY ANOTHER USER & GROUP
+                            //args '-u root:root' !!! don't do this!!  TO SPECIFY ANOTHER USER & GROUP
                         }
                     }
 
@@ -96,7 +96,7 @@ pipeline {
             }
             
             environment {
-                 CI_ENVIRONMENT_URL="${env.STAGING_URL}"
+                 CI_ENVIRONMENT_URL='STAGING_URL_TO_BE_SET'
             }
 
             steps {
