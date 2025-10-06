@@ -6,7 +6,7 @@ pipeline {
         INDEX_HTML = 'index.html'
         NETLIFY_SITE_ID = 'eb5a1fab-7af2-472e-975a-6cee64e37a47'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-        REACT_APP_VERSION = '1.2.3'
+        REACT_APP_VERSION = "1.0.$BUILD_ID"
     }
 
     stages {
