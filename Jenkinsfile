@@ -100,9 +100,38 @@ pipeline {
                         node_modules/.bin/netlify --version
                         echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
                         node_modules/.bin/netlify status
-                        node_modules/.bin/netlify deploy --dir=build --no-build --json > staging-output.json
-                        node_modules/.bin/node-jq -r '.deploy_url' staging-output.json
+                        node_modules/.bin/netlify deploy --dir=build --no-build --json > staging-output.json   
                 '''
+            }
+            script {
+                env.STAGING_URL =  sh(script: "node_modules/.bin/node-jq -r '.deploy_url' staging-output.json", returnStdout: true)
+            }
+        }
+
+       stage ('Staging E2E Testing') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                    //args '-u root:root' !!! don't do this!!  TO SPECIFY ANOTHER USER & GROUP
+                }
+            }
+            
+            environment {
+                 CI_ENVIRONMENT_URL="${env.STAGING_URL}"
+            }
+
+            steps {
+                echo 'Testing the app in production ...'
+                sh '''
+                    npx playwright test --reporter=html
+                '''
+            }
+
+            post {
+                always {
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'STAGING E2E - HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                }
             }
         }
 
@@ -133,7 +162,7 @@ pipeline {
             }
         }
 
-        stage ('Prod E2E Testing') {
+               stage ('Prod E2E Testing') {
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -159,5 +188,6 @@ pipeline {
                 }
             }
         }
-    }
+
+     }
 }
