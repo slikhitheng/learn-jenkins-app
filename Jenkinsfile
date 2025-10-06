@@ -86,29 +86,7 @@ pipeline {
             }
         }
 
-        stage('Deploy staging') {
-            agent {
-                docker {
-                    image 'node:22-alpine'
-                    reuseNode true
-                }
-            }
-
-            steps {
-                sh '''
-                        npm install netlify-cli node-jq
-                        node_modules/.bin/netlify --version
-                        echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
-                        node_modules/.bin/netlify status
-                        node_modules/.bin/netlify deploy --dir=build --no-build --json > staging-output.json   
-                '''
-                script {
-                    env.STAGING_URL =  sh(script: "node_modules/.bin/node-jq -r '.deploy_url' staging-output.json", returnStdout: true)
-                }
-            }
-        }
-
-       stage ('Staging E2E Testing') {
+       stage ('Staging Deployment & E2E Testing') {
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -124,6 +102,12 @@ pipeline {
             steps {
                 echo 'Testing the app in production ...'
                 sh '''
+                    npm install netlify-cli node-jq
+                    node_modules/.bin/netlify --version
+                    echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --no-build --json > staging-output.json
+                    CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' staging-output.json)
                     npx playwright test --reporter=html
                 '''
             }
@@ -143,7 +127,7 @@ pipeline {
             }
         }
 
-        stage ('Prod Deployment & E2E Testing') {
+        stage ('Prod Deploction deployment & E2E Testing') {
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
